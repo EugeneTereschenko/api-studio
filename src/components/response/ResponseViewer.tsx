@@ -1,19 +1,21 @@
+import type { ApiResponse } from "../../types/ApiResponse";
+
+import ResponseInfo from "./ResponseInfo";
+import ResponseTabs from "./ResponseTabs";
+
 type Props = {
-    data: unknown;
+    response: ApiResponse | null;
 };
 
-export default function ResponseViewer({ data }: Props) {
+export default function ResponseViewer({ response }: Props) {
+    if (!response) {
+        return <p>No response yet.</p>;
+    }
+
     return (
-        <pre
-            style={{
-                background: "#222",
-                color: "#fff",
-                padding: "1rem",
-                borderRadius: "8px",
-                overflow: "auto",
-            }}
-        >
-            {JSON.stringify(data, null, 2)}
-        </pre>
+        <>
+            <ResponseInfo response={response} />
+            <ResponseTabs response={response} />
+        </>
     );
 }

@@ -1,14 +1,18 @@
 import { useState } from "react";
 
+import type { ApiRequest } from "../../types/ApiRequest";
+
 type Props = {
-  onSend: (method: string, url: string) => void;
+    request: ApiRequest;
+    onRequestChange: React.Dispatch<React.SetStateAction<ApiRequest>>;
+    onSend: (request: ApiRequest) => void;
 };
 
-export default function RequestBar({ onSend }: Props) {
-  const [method, setMethod] = useState("GET");
-  const [url, setUrl] = useState(
-    "https://jsonplaceholder.typicode.com/users"
-  );
+export default function RequestBar({
+    request,
+    onRequestChange,
+    onSend,
+}: Props) {
 
   return (
     <div
@@ -19,8 +23,13 @@ export default function RequestBar({ onSend }: Props) {
       }}
     >
       <select
-        value={method}
-        onChange={(e) => setMethod(e.target.value)}
+        value={request.method}
+        onChange={(e) =>
+            onRequestChange((prev) => ({
+                ...prev,
+                method: e.target.value as ApiRequest["method"],
+            }))
+        }
       >
         <option>GET</option>
         <option>POST</option>
@@ -31,11 +40,16 @@ export default function RequestBar({ onSend }: Props) {
 
       <input
         style={{ flex: 1 }}
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
+        value={request.url}
+        onChange={(e) =>
+        onRequestChange((prev) => ({
+                ...prev,
+                url: e.target.value,
+            }))
+        }
       />
 
-      <button onClick={() => onSend(method, url)}>
+      <button onClick={() => onSend(request)}>
         Send
       </button>
     </div>
