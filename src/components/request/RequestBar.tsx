@@ -3,15 +3,15 @@ import { useState } from "react";
 import type { ApiRequest } from "../../types/ApiRequest";
 
 type Props = {
-    request: ApiRequest;
-    onRequestChange: React.Dispatch<React.SetStateAction<ApiRequest>>;
-    onSend: (request: ApiRequest) => void;
+  request: ApiRequest;
+  onRequestChange: (request: ApiRequest) => void;
+  onSend: (request: ApiRequest) => void;
 };
 
 export default function RequestBar({
-    request,
-    onRequestChange,
-    onSend,
+  request,
+  onRequestChange,
+  onSend,
 }: Props) {
 
   return (
@@ -25,10 +25,10 @@ export default function RequestBar({
       <select
         value={request.method}
         onChange={(e) =>
-            onRequestChange((prev) => ({
-                ...prev,
-                method: e.target.value as ApiRequest["method"],
-            }))
+          onRequestChange({
+            ...request,
+            url: e.target.value,
+          })
         }
       >
         <option>GET</option>
@@ -42,10 +42,10 @@ export default function RequestBar({
         style={{ flex: 1 }}
         value={request.url}
         onChange={(e) =>
-        onRequestChange((prev) => ({
-                ...prev,
-                url: e.target.value,
-            }))
+          onRequestChange({
+            ...request,
+            method: e.target.value as ApiRequest["method"],
+          })
         }
       />
 

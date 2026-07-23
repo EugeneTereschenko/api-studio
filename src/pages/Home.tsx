@@ -10,17 +10,14 @@ import { useHistoryStore } from "../store/historyStore";
 import type { ApiRequest } from "../types/ApiRequest";
 import type { ApiResponse } from "../types/ApiResponse";
 
+import { useRequestStore } from "../store/requestStore";
+
 
 export default function Home() {
     const [response, setResponse] = useState<ApiResponse | null>(null);
 
-    const [request, setRequest] = useState<ApiRequest>({
-            method: "GET",
-            url: "https://jsonplaceholder.typicode.com/users",
-            headers: [],
-            params: [],
-            body: "",
-        });
+    const request = useRequestStore((state) => state.request);
+    const setRequest = useRequestStore((state) => state.setRequest);
 
     const addHistory = useHistoryStore((state) => state.add);
 
