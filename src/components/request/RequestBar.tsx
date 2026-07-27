@@ -3,15 +3,17 @@ import { useState } from "react";
 import type { ApiRequest } from "../../types/ApiRequest";
 
 type Props = {
-  request: ApiRequest;
-  onRequestChange: (request: ApiRequest) => void;
-  onSend: (request: ApiRequest) => void;
+    request: ApiRequest;
+    onRequestChange:(request:ApiRequest)=>void;
+    onSend:(request:ApiRequest)=>void;
+    onSave:()=>void;
 };
 
 export default function RequestBar({
   request,
   onRequestChange,
   onSend,
+  onSave
 }: Props) {
 
   return (
@@ -27,7 +29,7 @@ export default function RequestBar({
         onChange={(e) =>
           onRequestChange({
             ...request,
-            url: e.target.value,
+            method: e.target.value as ApiRequest["method"],
           })
         }
       >
@@ -51,6 +53,10 @@ export default function RequestBar({
 
       <button onClick={() => onSend(request)}>
         Send
+      </button>
+
+      <button onClick={onSave}>
+        Save
       </button>
     </div>
   );

@@ -11,15 +11,33 @@ import type { ApiRequest } from "../types/ApiRequest";
 import type { ApiResponse } from "../types/ApiResponse";
 
 import { useRequestStore } from "../store/requestStore";
+import SaveRequestDialog from "../components/collections/SaveRequestDialog";
+import { useCollectionStore } from "../store/collectionStore";
 
 
 export default function Home() {
     const [response, setResponse] = useState<ApiResponse | null>(null);
 
     const request = useRequestStore((state) => state.request);
+
+
+    const collections = useCollectionStore((state) => state.collections);
+
+    const addCollection = useCollectionStore(
+        (state) => state.addCollection
+    );
+
+    const addRequest = useCollectionStore(
+        (state) => state.addRequest
+    );
+
     const setRequest = useRequestStore((state) => state.setRequest);
 
     const addHistory = useHistoryStore((state) => state.add);
+
+    const [saveOpen, setSaveOpen] = useState(false);
+
+
 
     async function handleSend(request: ApiRequest) {
         try {
@@ -58,6 +76,32 @@ export default function Home() {
             console.error(error);
         }
     }
+    function handleSave(data: {
+        requestName: string;
+        collectionName: string;
+        createNew: boolean;
+    }) {
+
+        let collection = collections.find(
+            c => c.name === data.collectionName
+        );
+
+        let collectionId: string;
+
+        if (!collection) {
+            collectionId = addCollection(data.collectionName);
+        } else {
+            collectionId = collection.id;
+        }
+
+        addRequest(collectionId, {
+            id: crypto.randomUUID(),
+            name: data.requestName,
+            request,
+        });
+
+        setSaveOpen(false);
+    }
 
     return (
         <>
@@ -65,9 +109,16 @@ export default function Home() {
                 request={request}
                 onRequestChange={setRequest}
                 onSend={handleSend}
+                onSave={() => setSaveOpen(true)}
             />
 
             <ResponseViewer response={response} />
+            <SaveRequestDialog
+                open={saveOpen}
+                collections={collections.map(c => c.name)}
+                onCancel={() => setSaveOpen(false)}
+                onSave={handleSave}
+            />
         </>
-  );
+    );
 }

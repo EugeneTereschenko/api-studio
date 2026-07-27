@@ -3,44 +3,49 @@ import { create } from "zustand";
 import type { Collection } from "../types/Collection";
 import type { SavedRequest } from "../types/SavedRequest";
 
-type CollectionStore = {
+interface CollectionStore {
     collections: Collection[];
 
-    addCollection: (name: string) => void;
+    addCollection: (name: string) => string;
 
     addRequest: (
         collectionId: string,
         request: SavedRequest
     ) => void;
-};
+}
 
-export const useCollectionStore = create<CollectionStore>((set) => ({
+export const useCollectionStore =
+create<CollectionStore>((set, get) => ({
+
     collections: [],
 
-    addCollection: (name) =>
-        set((state) => ({
+    addCollection(name) {
+        const id = crypto.randomUUID();
+
+        set(state => ({
             collections: [
                 ...state.collections,
                 {
-                    id: crypto.randomUUID(),
+                    id,
                     name,
                     requests: [],
                 },
             ],
-        })),
+        }));
 
-    addRequest: (collectionId, request) =>
-        set((state) => ({
-            collections: state.collections.map((collection) =>
-                collection.id === collectionId
+        return id;
+    },
+
+    addRequest(collectionId, request) {
+        set(state => ({
+            collections: state.collections.map(c =>
+                c.id === collectionId
                     ? {
-                          ...collection,
-                          requests: [
-                              ...collection.requests,
-                              request,
-                          ],
+                          ...c,
+                          requests: [...c.requests, request],
                       }
-                    : collection
+                    : c
             ),
-        })),
+        }));
+    },
 }));
