@@ -14,6 +14,10 @@ import { useRequestStore } from "../store/requestStore";
 import SaveRequestDialog from "../components/collections/SaveRequestDialog";
 import { useCollectionStore } from "../store/collectionStore";
 
+import { resolveEnvironment } from "../utils/environmentResolver";
+
+import { useEnvironmentStore } from "../store/environmentStore";
+
 
 export default function Home() {
     const [response, setResponse] = useState<ApiResponse | null>(null);
@@ -37,10 +41,34 @@ export default function Home() {
 
     const [saveOpen, setSaveOpen] = useState(false);
 
+    const environments = useEnvironmentStore(
+        (state) => state.environments
+    );
 
+    const activeEnvironmentId = useEnvironmentStore(
+        (state) => state.activeEnvironmentId
+    );
+
+    const activeEnvironment = environments.find(
+        (env) => env.id === activeEnvironmentId
+    );
 
     async function handleSend(request: ApiRequest) {
         try {
+
+
+            const finalUrl = resolveEnvironment(
+                request.url,
+                activeEnvironment
+            );
+            
+            await axios({
+                method: request.method,
+                url: finalUrl,
+                data: request.body,
+            });
+
+
             const start = performance.now();
 
             const res = await axios({
