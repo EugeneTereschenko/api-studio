@@ -1,19 +1,18 @@
-import type { Environment } from "../types/Environment";
+import type { Environment, EnvironmentVariable } from "../types/Environment";
 
 export function resolveEnvironment(
     text: string,
-    environment?: Environment
-) {
-    if (!environment) return text;
+    variables: EnvironmentVariable[]
+): string {
 
     let result = text;
 
-    for (const variable of environment.variables) {
+    variables.forEach(variable => {
         result = result.replaceAll(
             `{{${variable.key}}}`,
             variable.value
         );
-    }
+    });
 
     return result;
 }

@@ -1,19 +1,20 @@
 import { create } from "zustand";
 
-import type { Environment } from "../types/Environment";
+import type { Environment, EnvironmentVariable } from "../types/Environment";
+
 
 interface EnvironmentStore {
     environments: Environment[];
-
     activeEnvironmentId: string | null;
-
-    setActiveEnvironment: (id: string) => void;
 
     addEnvironment: (name: string) => void;
 
-    updateEnvironment: (environment: Environment) => void;
+    deleteEnvironment: (id: string) => void;
 
-    removeEnvironment: (id: string) => void;
+    updateVariable: (envId: string, variable: EnvironmentVariable) => void;
+
+
+    setActive: (id: string) => void;
 }
 
 export const useEnvironmentStore =
@@ -23,38 +24,55 @@ create<EnvironmentStore>((set) => ({
 
     activeEnvironmentId: null,
 
-    setActiveEnvironment(id) {
-        set({ activeEnvironmentId: id });
-    },
-
     addEnvironment(name) {
+        const id = crypto.randomUUID();
+
         set(state => ({
             environments: [
                 ...state.environments,
                 {
-                    id: crypto.randomUUID(),
+                    id,
                     name,
                     variables: [],
                 },
             ],
+            activeEnvironmentId: id,
         }));
     },
 
-    updateEnvironment(environment) {
-        set(state => ({
-            environments: state.environments.map(env =>
-                env.id === environment.id
-                    ? environment
-                    : env
-            ),
-        }));
-    },
-
-    removeEnvironment(id) {
+    deleteEnvironment(id) {
         set(state => ({
             environments: state.environments.filter(
-                env => env.id !== id
+                e => e.id !== id
             ),
         }));
     },
+
+    updateVariable(envId, variable) {
+    set(state => ({
+        environments: state.environments.map(env =>
+            env.id === envId
+                ? {
+                      ...env,
+                      variables: env.variables.some(
+                          v => v.key === variable.key
+                      )
+                          ? env.variables.map(v =>
+                                v.key === variable.key
+                                    ? variable
+                                    : v
+                            )
+                          : [...env.variables, variable],
+                  }
+                : env
+        ),
+    }));
+},
+
+    setActive(id) {
+        set({
+            activeEnvironmentId: id,
+        });
+    },
+
 }));

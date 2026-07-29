@@ -59,7 +59,7 @@ export default function Home() {
 
             const finalUrl = resolveEnvironment(
                 request.url,
-                activeEnvironment
+                activeEnvironment?.variables ?? []
             );
             
             await axios({
@@ -73,7 +73,7 @@ export default function Home() {
 
             const res = await axios({
                 method: request.method,
-                url: request.url,
+                url: finalUrl,
                 data: request.body,
             });
 
