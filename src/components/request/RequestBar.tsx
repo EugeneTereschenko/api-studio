@@ -1,63 +1,57 @@
-import { useState } from "react";
+import MethodSelect from "./MethodSelect";
+import UrlInput from "./UrlInput";
+import SendButton from "./SendButton.tsx";
 
 import type { ApiRequest } from "../../types/ApiRequest";
 
 type Props = {
     request: ApiRequest;
-    onRequestChange:(request:ApiRequest)=>void;
-    onSend:(request:ApiRequest)=>void;
-    onSave:()=>void;
+    onRequestChange: (request: ApiRequest) => void;
+    onSend: (request: ApiRequest) => void;
+    onSave: () => void;
 };
 
 export default function RequestBar({
-  request,
-  onRequestChange,
-  onSend,
-  onSave
+    request,
+    onRequestChange,
+    onSend,
+    onSave,
 }: Props) {
+    return (
+        <div
+            style={{
+                display: "flex",
+                gap: 10,
+                marginBottom: 20,
+            }}
+        >
+            <MethodSelect
+                value={request.method}
+                onChange={(method) =>
+                    onRequestChange({
+                        ...request,
+                        method,
+                    })
+                }
+            />
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        gap: "10px",
-        marginBottom: "20px",
-      }}
-    >
-      <select
-        value={request.method}
-        onChange={(e) =>
-          onRequestChange({
-            ...request,
-            method: e.target.value as ApiRequest["method"],
-          })
-        }
-      >
-        <option>GET</option>
-        <option>POST</option>
-        <option>PUT</option>
-        <option>PATCH</option>
-        <option>DELETE</option>
-      </select>
+            <UrlInput
+                value={request.url}
+                onChange={(url) =>
+                    onRequestChange({
+                        ...request,
+                        url,
+                    })
+                }
+            />
 
-      <input
-        style={{ flex: 1 }}
-        value={request.url}
-        onChange={(e) =>
-          onRequestChange({
-            ...request,
-            method: e.target.value as ApiRequest["method"],
-          })
-        }
-      />
+            <SendButton
+                onClick={() => onSend(request)}
+            />
 
-      <button onClick={() => onSend(request)}>
-        Send
-      </button>
-
-      <button onClick={onSave}>
-        Save
-      </button>
-    </div>
-  );
+            <button onClick={onSave}>
+                Save
+            </button>
+        </div>
+    );
 }
