@@ -61,19 +61,31 @@ export default function Home() {
                 request.url,
                 activeEnvironment?.variables ?? []
             );
-            
-            await axios({
-                method: request.method,
-                url: finalUrl,
-                data: request.body,
-            });
-
 
             const start = performance.now();
 
             const res = await axios({
                 method: request.method,
-                url: finalUrl,
+                url: request.url,
+
+                headers: Object.fromEntries(
+                    request.headers
+                        .filter((header) => header.enabled && header.key)
+                        .map((header) => [
+                            header.key,
+                            header.value,
+                        ])
+                ),
+
+                params: Object.fromEntries(
+                    request.params
+                        .filter((param) => param.enabled && param.key)
+                        .map((param) => [
+                            param.key,
+                            param.value,
+                        ])
+                ),
+
                 data: request.body,
             });
 

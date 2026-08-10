@@ -1,6 +1,7 @@
 import MethodSelect from "./MethodSelect";
 import UrlInput from "./UrlInput";
-import SendButton from "./SendButton.tsx";
+import SendButton from "./SendButton";
+import RequestTabs from "./RequestTabs";
 
 import type { ApiRequest } from "../../types/ApiRequest";
 
@@ -18,40 +19,48 @@ export default function RequestBar({
     onSave,
 }: Props) {
     return (
-        <div
-            style={{
-                display: "flex",
-                gap: 10,
-                marginBottom: 20,
-            }}
-        >
-            <MethodSelect
-                value={request.method}
-                onChange={(method) =>
-                    onRequestChange({
-                        ...request,
-                        method,
-                    })
-                }
+        <div style={{ marginBottom: 20 }}>
+
+            <div
+                style={{
+                    display: "flex",
+                    gap: 10,
+                }}
+            >
+                <MethodSelect
+                    value={request.method}
+                    onChange={(method) =>
+                        onRequestChange({
+                            ...request,
+                            method,
+                        })
+                    }
+                />
+
+                <UrlInput
+                    value={request.url}
+                    onChange={(url) =>
+                        onRequestChange({
+                            ...request,
+                            url,
+                        })
+                    }
+                />
+
+                <SendButton
+                    onClick={() => onSend(request)}
+                />
+
+                <button onClick={onSave}>
+                    Save
+                </button>
+            </div>
+
+            <RequestTabs
+                request={request}
+                onChange={onRequestChange}
             />
 
-            <UrlInput
-                value={request.url}
-                onChange={(url) =>
-                    onRequestChange({
-                        ...request,
-                        url,
-                    })
-                }
-            />
-
-            <SendButton
-                onClick={() => onSend(request)}
-            />
-
-            <button onClick={onSave}>
-                Save
-            </button>
         </div>
     );
 }
