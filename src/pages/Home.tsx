@@ -19,6 +19,8 @@ import { resolveEnvironment } from "../utils/environmentResolver";
 import { useEnvironmentStore } from "../store/environmentStore";
 
 
+
+
 export default function Home() {
     const [response, setResponse] = useState<ApiResponse | null>(null);
 
@@ -50,27 +52,30 @@ export default function Home() {
     );
 
     const activeEnvironment = environments.find(
-        (env) => env.id === activeEnvironmentId
+        (environment) =>
+            environment.id === activeEnvironmentId
     );
 
     async function handleSend(request: ApiRequest) {
         try {
-
+            const start = performance.now();
 
             const finalUrl = resolveEnvironment(
                 request.url,
-                activeEnvironment?.variables ?? []
+                activeEnvironment
             );
-
-            const start = performance.now();
 
             const res = await axios({
                 method: request.method,
-                url: request.url,
+                url: finalUrl,
 
                 headers: Object.fromEntries(
                     request.headers
-                        .filter((header) => header.enabled && header.key)
+                        .filter(
+                            (header) =>
+                                header.enabled &&
+                                header.key
+                        )
                         .map((header) => [
                             header.key,
                             header.value,
@@ -79,7 +84,11 @@ export default function Home() {
 
                 params: Object.fromEntries(
                     request.params
-                        .filter((param) => param.enabled && param.key)
+                        .filter(
+                            (param) =>
+                                param.enabled &&
+                                param.key
+                        )
                         .map((param) => [
                             param.key,
                             param.value,
@@ -89,10 +98,11 @@ export default function Home() {
                 data: request.body,
             });
 
-            const duration = performance.now() - start;
+            const duration =
+                performance.now() - start;
 
             const size = new Blob([
-                JSON.stringify(res.data)
+                JSON.stringify(res.data),
             ]).size;
 
             const apiResponse: ApiResponse = {
@@ -100,7 +110,8 @@ export default function Home() {
                 statusText: res.statusText,
                 duration,
                 size,
-                headers: res.headers as Record<string, string>,
+                headers:
+                    res.headers as Record<string, string>,
                 data: res.data,
             };
 
@@ -112,6 +123,7 @@ export default function Home() {
                 response: apiResponse,
                 createdAt: new Date(),
             });
+
         } catch (error) {
             console.error(error);
         }
