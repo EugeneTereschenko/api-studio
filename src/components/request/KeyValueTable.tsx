@@ -25,6 +25,20 @@ export default function KeyValueTable({
         onChange(next);
     }
 
+    function toggleItem(
+        index: number,
+        enabled: boolean
+    ) {
+        const next = [...items];
+
+        next[index] = {
+            ...next[index],
+            enabled,
+        };
+
+        onChange(next);
+    }
+
     function addItem() {
         onChange([
             ...items,
@@ -45,7 +59,6 @@ export default function KeyValueTable({
 
     return (
         <div>
-
             <table
                 style={{
                     width: "100%",
@@ -54,35 +67,38 @@ export default function KeyValueTable({
             >
                 <thead>
                     <tr>
-                        <th>Use</th>
+                        <th style={{ width: "60px" }}>Use</th>
                         <th>Key</th>
                         <th>Value</th>
-                        <th></th>
+                        <th style={{ width: "50px" }}></th>
                     </tr>
                 </thead>
 
                 <tbody>
                     {items.map((item, index) => (
                         <tr key={item.id}>
+
                             <td>
                                 <input
                                     type="checkbox"
                                     checked={item.enabled}
-                                    onChange={(e) => {
-                                        const next = [...items];
-                                        next[index] = {
-                                            ...item,
-                                            enabled: e.target.checked,
-                                        };
-                                        onChange(next);
-                                    }}
+                                    onChange={(e) =>
+                                        toggleItem(
+                                            index,
+                                            e.target.checked
+                                        )
+                                    }
                                 />
                             </td>
 
                             <td>
                                 <input
-                                    style={{ width: "95%" }}
+                                    style={{
+                                        width: "95%",
+                                        padding: "6px",
+                                    }}
                                     value={item.key}
+                                    placeholder="Key"
                                     onChange={(e) =>
                                         updateItem(
                                             index,
@@ -95,8 +111,12 @@ export default function KeyValueTable({
 
                             <td>
                                 <input
-                                    style={{ width: "95%" }}
+                                    style={{
+                                        width: "95%",
+                                        padding: "6px",
+                                    }}
                                     value={item.value}
+                                    placeholder="Value"
                                     onChange={(e) =>
                                         updateItem(
                                             index,
@@ -109,24 +129,27 @@ export default function KeyValueTable({
 
                             <td>
                                 <button
-                                    onClick={() => removeItem(index)}
+                                    onClick={() =>
+                                        removeItem(index)
+                                    }
                                 >
                                     ✕
                                 </button>
                             </td>
+
                         </tr>
                     ))}
                 </tbody>
-
             </table>
 
             <button
-                style={{ marginTop: "10px" }}
+                style={{
+                    marginTop: "10px",
+                }}
                 onClick={addItem}
             >
                 + Add
             </button>
-
         </div>
     );
 }

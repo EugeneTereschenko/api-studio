@@ -3,18 +3,22 @@ import KeyValueTable from "./KeyValueTable";
 import type { KeyValuePair } from "../../types/ApiRequest";
 
 type Props = {
-    value: KeyValuePair[];
+    items: KeyValuePair[];
     onChange: (items: KeyValuePair[]) => void;
 };
 
 export default function HeadersEditor({
-    value,
+    items,
     onChange,
 }: Props) {
     return (
-        <KeyValueTable
-            items={value}
-            onChange={onChange}
-        />
+        <div>
+            <h3>Headers</h3>
+
+            <KeyValueTable
+                items={items}
+                onChange={onChange}
+            />
+        </div>
     );
 }

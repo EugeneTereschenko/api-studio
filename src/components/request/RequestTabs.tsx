@@ -17,33 +17,41 @@ export default function RequestTabs({
     request,
     onChange,
 }: Props) {
-    const [tab, setTab] = useState<Tab>("params");
+    const [activeTab, setActiveTab] = useState<Tab>("params");
 
     return (
         <div style={{ marginTop: 20 }}>
+
             <div
                 style={{
                     display: "flex",
-                    gap: 10,
+                    gap: 5,
+                    borderBottom: "1px solid #ccc",
                     marginBottom: 15,
                 }}
             >
-                <button onClick={() => setTab("params")}>
+                <button
+                    onClick={() => setActiveTab("params")}
+                >
                     Params
                 </button>
 
-                <button onClick={() => setTab("headers")}>
+                <button
+                    onClick={() => setActiveTab("headers")}
+                >
                     Headers
                 </button>
 
-                <button onClick={() => setTab("body")}>
+                <button
+                    onClick={() => setActiveTab("body")}
+                >
                     Body
                 </button>
             </div>
 
-            {tab === "params" && (
+            {activeTab === "params" && (
                 <QueryParamsEditor
-                    value={request.params}
+                    items={request.params}
                     onChange={(params) =>
                         onChange({
                             ...request,
@@ -53,9 +61,9 @@ export default function RequestTabs({
                 />
             )}
 
-            {tab === "headers" && (
+            {activeTab === "headers" && (
                 <HeadersEditor
-                    value={request.headers}
+                    items={request.headers}
                     onChange={(headers) =>
                         onChange({
                             ...request,
@@ -65,7 +73,7 @@ export default function RequestTabs({
                 />
             )}
 
-            {tab === "body" && (
+            {activeTab === "body" && (
                 <BodyEditor
                     value={request.body}
                     onChange={(body) =>
@@ -76,6 +84,7 @@ export default function RequestTabs({
                     }
                 />
             )}
+
         </div>
     );
 }

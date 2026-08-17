@@ -1,6 +1,6 @@
 type Props = {
     value: string;
-    onChange: (body: string) => void;
+    onChange: (value: string) => void;
 };
 
 export default function BodyEditor({
@@ -8,15 +8,21 @@ export default function BodyEditor({
     onChange,
 }: Props) {
     return (
-        <textarea
-            rows={12}
-            style={{ 
-                width: "100%",
-                fontFamily: "monospace",
-             }}
-            value={value}
-            placeholder="Request body"
-            onChange={(e) => onChange(e.target.value)}
-        />
+        <div>
+            <h3>Request Body</h3>
+
+            <textarea
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="Request body..."
+                rows={10}
+                style={{
+                    width: "100%",
+                    fontFamily: "monospace",
+                    padding: "10px",
+                    boxSizing: "border-box",
+                }}
+            />
+        </div>
     );
 }

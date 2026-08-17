@@ -7,30 +7,31 @@ import type { ApiRequest } from "../../types/ApiRequest";
 
 type Props = {
     request: ApiRequest;
-    onRequestChange: (request: ApiRequest) => void;
+    onChange: (request: ApiRequest) => void;
     onSend: (request: ApiRequest) => void;
     onSave: () => void;
 };
 
 export default function RequestBar({
     request,
-    onRequestChange,
+    onChange,
     onSend,
     onSave,
 }: Props) {
     return (
-        <div style={{ marginBottom: 20 }}>
-
+        <>
             <div
                 style={{
                     display: "flex",
                     gap: 10,
+                    marginBottom: 15,
+                    alignItems: "center",
                 }}
             >
                 <MethodSelect
                     value={request.method}
                     onChange={(method) =>
-                        onRequestChange({
+                        onChange({
                             ...request,
                             method,
                         })
@@ -40,27 +41,22 @@ export default function RequestBar({
                 <UrlInput
                     value={request.url}
                     onChange={(url) =>
-                        onRequestChange({
+                        onChange({
                             ...request,
                             url,
                         })
                     }
                 />
 
-                <SendButton
-                    onClick={() => onSend(request)}
-                />
+                <SendButton onClick={() => onSend(request)} />
 
-                <button onClick={onSave}>
-                    Save
-                </button>
+                <button onClick={onSave}>Save</button>
             </div>
 
             <RequestTabs
                 request={request}
-                onChange={onRequestChange}
+                onChange={onChange}
             />
-
-        </div>
+        </>
     );
 }

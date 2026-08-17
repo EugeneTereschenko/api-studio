@@ -65,37 +65,55 @@ export default function Home() {
                 activeEnvironment
             );
 
+            const resolvedHeaders = Object.fromEntries(
+                request.headers
+                    .filter(
+                        (header) =>
+                            header.enabled &&
+                            header.key
+                    )
+                    .map((header) => [
+                        resolveEnvironment(
+                            header.key,
+                            activeEnvironment
+                        ),
+                        resolveEnvironment(
+                            header.value,
+                            activeEnvironment
+                        ),
+                    ])
+            );
+
+            const resolvedParams = Object.fromEntries(
+                request.params
+                    .filter(
+                        (param) =>
+                            param.enabled &&
+                            param.key
+                    )
+                    .map((param) => [
+                        resolveEnvironment(
+                            param.key,
+                            activeEnvironment
+                        ),
+                        resolveEnvironment(
+                            param.value,
+                            activeEnvironment
+                        ),
+                    ])
+            );
+
+            const resolvedBody = resolveEnvironment(
+                request.body,
+                activeEnvironment
+            );
+
             const res = await axios({
                 method: request.method,
                 url: finalUrl,
-
-                headers: Object.fromEntries(
-                    request.headers
-                        .filter(
-                            (header) =>
-                                header.enabled &&
-                                header.key
-                        )
-                        .map((header) => [
-                            header.key,
-                            header.value,
-                        ])
-                ),
-
-                params: Object.fromEntries(
-                    request.params
-                        .filter(
-                            (param) =>
-                                param.enabled &&
-                                param.key
-                        )
-                        .map((param) => [
-                            param.key,
-                            param.value,
-                        ])
-                ),
-
-                data: request.body,
+                headers: resolvedHeaders,
+                params: resolvedParams,
+                data: resolvedBody,
             });
 
             const duration =
@@ -128,6 +146,8 @@ export default function Home() {
             console.error(error);
         }
     }
+
+
     function handleSave(data: {
         requestName: string;
         collectionName: string;
@@ -159,12 +179,13 @@ export default function Home() {
         <>
             <RequestBar
                 request={request}
-                onRequestChange={setRequest}
+                onChange={setRequest}
                 onSend={handleSend}
                 onSave={() => setSaveOpen(true)}
             />
 
             <ResponseViewer response={response} />
+
             <SaveRequestDialog
                 open={saveOpen}
                 collections={collections.map(c => c.name)}
