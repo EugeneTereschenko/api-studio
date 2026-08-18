@@ -56,8 +56,12 @@ export default function Home() {
             environment.id === activeEnvironmentId
     );
 
+    const [loading, setLoading] = useState(false);
+
     async function handleSend(request: ApiRequest) {
         try {
+            setLoading(true);
+
             const start = performance.now();
 
             const finalUrl = resolveEnvironment(
@@ -144,6 +148,9 @@ export default function Home() {
 
         } catch (error) {
             console.error(error);
+
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -179,9 +186,10 @@ export default function Home() {
         <>
             <RequestBar
                 request={request}
-                onChange={setRequest}
+                onRequestChange={setRequest}
                 onSend={handleSend}
                 onSave={() => setSaveOpen(true)}
+                loading={loading}
             />
 
             <ResponseViewer response={response} />
