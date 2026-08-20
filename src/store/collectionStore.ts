@@ -15,7 +15,7 @@ interface CollectionStore {
 }
 
 export const useCollectionStore =
-create<CollectionStore>((set, get) => ({
+create<CollectionStore>((set) => ({
 
     collections: [],
 
