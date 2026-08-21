@@ -12,6 +12,8 @@ interface CollectionStore {
         collectionId: string,
         request: SavedRequest
     ) => void;
+
+    replaceCollections: (collections: Collection[]) => void;
 }
 
 export const useCollectionStore =
@@ -47,5 +49,9 @@ create<CollectionStore>((set) => ({
                     : c
             ),
         }));
+    },
+
+    replaceCollections(collections) {
+        set({ collections });
     },
 }));

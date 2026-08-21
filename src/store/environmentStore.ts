@@ -15,6 +15,11 @@ interface EnvironmentStore {
 
 
     setActive: (id: string) => void;
+
+    replaceEnvironments: (
+        environments: Environment[],
+        activeEnvironmentId: string | null
+    ) => void;
 }
 
 export const useEnvironmentStore =
@@ -72,6 +77,13 @@ create<EnvironmentStore>((set) => ({
     setActive(id) {
         set({
             activeEnvironmentId: id,
+        });
+    },
+
+    replaceEnvironments(environments, activeEnvironmentId) {
+        set({
+            environments,
+            activeEnvironmentId,
         });
     },
 
