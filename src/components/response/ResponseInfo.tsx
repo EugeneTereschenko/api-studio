@@ -2,31 +2,24 @@ import type { ApiResponse } from "../../types/ApiResponse";
 
 type Props = {
     response: ApiResponse | null;
-}
+};
 
 export default function ResponseInfo({ response }: Props) {
     return (
-        <div
-            style = {{
-                display: "flex",
-                gap: "20px",
-                marginBottom: "1rem",
-                padding: "0.75rem",
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-            }}
-        >
-            <div>
+        <div className="grid-two">
+            <div className="card card-muted">
                 <strong>Status</strong>
                 <br />
-                {response?.status} {response?.statusText}
+                <span className="status-ok">
+                    {response?.status} {response?.statusText}
+                </span>
             </div>
-            <div>
+            <div className="card card-muted">
                 <strong>Time</strong>
                 <br />
                 {response?.duration.toFixed(2)} ms
             </div>
-            <div>
+            <div className="card card-muted">
                 <strong>Size</strong>
                 <br />
                 {response?.size} bytes

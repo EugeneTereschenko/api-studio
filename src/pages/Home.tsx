@@ -183,7 +183,14 @@ export default function Home() {
     }
 
     return (
-        <>
+        <div className="page">
+            <div className="page-header">
+                <div>
+                    <h1 className="page-title">Request Workspace</h1>
+                    <p className="page-subtitle">Compose requests, resolve environment variables, and review responses in one focused workspace.</p>
+                </div>
+            </div>
+
             <RequestBar
                 request={request}
                 onRequestChange={setRequest}
@@ -200,6 +207,6 @@ export default function Home() {
                 onCancel={() => setSaveOpen(false)}
                 onSave={handleSave}
             />
-        </>
+        </div>
     );
 }

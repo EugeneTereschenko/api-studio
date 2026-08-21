@@ -13,23 +13,20 @@ export default function CollectionCard({
     onRequestClick,
 }: Props) {
     return (
-        <div
-            style={{
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                marginBottom: "20px",
-                padding: "10px",
-            }}
-        >
-            <h3>{collection.name}</h3>
+        <article className="card">
+            <h2>{collection.name}</h2>
 
-            {collection.requests.map((request) => (
-                <CollectionItem
-                    key={request.id}
-                    request={request}
-                    onClick={onRequestClick}
-                />
-            ))}
-        </div>
+            {collection.requests.length > 0 ? (
+                collection.requests.map((request) => (
+                    <CollectionItem
+                        key={request.id}
+                        request={request}
+                        onClick={onRequestClick}
+                    />
+                ))
+            ) : (
+                <p className="page-subtitle">This collection is empty.</p>
+            )}
+        </article>
     );
 }

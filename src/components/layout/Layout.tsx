@@ -5,16 +5,16 @@ import Sidebar from "./Sidebar";
 
 export default function Layout() {
     return (
-        <>
+        <div className="app-shell">
             <Navbar />
 
-            <div style={{ display: "flex" }}>
+            <div className="layout">
                 <Sidebar />
 
-                <main style={{ padding: "1rem", flex: 1 }}>
+                <main className="content">
                     <Outlet />
                 </main>
             </div>
-        </>
+        </div>
     );
 }

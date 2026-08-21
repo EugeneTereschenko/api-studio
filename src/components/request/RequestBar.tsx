@@ -21,15 +21,8 @@ export default function RequestBar({
     loading,
 }: Props) {
     return (
-        <>
-            <div
-                style={{
-                    display: "flex",
-                    gap: 10,
-                    marginBottom: 15,
-                    alignItems: "center",
-                }}
-            >
+        <section className="card page">
+            <div className="toolbar">
                 <MethodSelect
                     value={request.method}
                     onChange={(method) =>
@@ -52,13 +45,13 @@ export default function RequestBar({
 
                 <SendButton onClick={() => onSend(request)} loading={loading} />
 
-                <button onClick={onSave}>Save</button>
+                <button type="button" onClick={onSave}>Save</button>
             </div>
 
             <RequestTabs
                 request={request}
                 onChange={onRequestChange}
             />
-        </>
+        </section>
     );
 }

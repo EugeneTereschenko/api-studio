@@ -20,29 +20,28 @@ export default function RequestTabs({
     const [activeTab, setActiveTab] = useState<Tab>("params");
 
     return (
-        <div style={{ marginTop: 20 }}>
+        <div>
 
-            <div
-                style={{
-                    display: "flex",
-                    gap: 5,
-                    borderBottom: "1px solid #ccc",
-                    marginBottom: 15,
-                }}
-            >
+            <div className="tabs">
                 <button
+                    className={`tab ${activeTab === "params" ? "active" : ""}`}
+                    type="button"
                     onClick={() => setActiveTab("params")}
                 >
                     Params
                 </button>
 
                 <button
+                    className={`tab ${activeTab === "headers" ? "active" : ""}`}
+                    type="button"
                     onClick={() => setActiveTab("headers")}
                 >
                     Headers
                 </button>
 
                 <button
+                    className={`tab ${activeTab === "body" ? "active" : ""}`}
+                    type="button"
                     onClick={() => setActiveTab("body")}
                 >
                     Body

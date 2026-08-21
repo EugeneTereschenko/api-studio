@@ -12,26 +12,20 @@ export default function ResponseTabs({ response }: Props) {
 
     return (
         <>
-            <div
-                style={{
-                    display: "flex",
-                    gap: "10px",
-                    marginBottom: "1rem",
-                }}
-            >
-                <button onClick={() => setTab("body")}>Body</button>
-                <button onClick={() => setTab("headers")}>Headers</button>
-                <button onClick={() => setTab("raw")}>Raw</button>
+            <div className="tabs">
+                <button className={`tab ${tab === "body" ? "active" : ""}`} type="button" onClick={() => setTab("body")}>Body</button>
+                <button className={`tab ${tab === "headers" ? "active" : ""}`} type="button" onClick={() => setTab("headers")}>Headers</button>
+                <button className={`tab ${tab === "raw" ? "active" : ""}`} type="button" onClick={() => setTab("raw")}>Raw</button>
             </div>
 
             {tab === "body" && <ResponseBody data={response.data} />}
 
             {tab === "headers" && (
-                <pre>{JSON.stringify(response.headers, null, 2)}</pre>
+                <pre className="code-block">{JSON.stringify(response.headers, null, 2)}</pre>
             )}
 
             {tab === "raw" && (
-                <pre>{JSON.stringify(response, null, 2)}</pre>
+                <pre className="code-block">{JSON.stringify(response, null, 2)}</pre>
             )}
         </>
     );

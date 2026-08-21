@@ -9,13 +9,18 @@ type Props = {
 
 export default function ResponseViewer({ response }: Props) {
     if (!response) {
-        return <p>No response yet.</p>;
+        return (
+            <section className="empty-state">
+                <h2>No response yet</h2>
+                <p>Send a request to inspect status, headers, and body output.</p>
+            </section>
+        );
     }
 
     return (
-        <>
+        <section className="card page">
             <ResponseInfo response={response} />
             <ResponseTabs response={response} />
-        </>
+        </section>
     );
 }

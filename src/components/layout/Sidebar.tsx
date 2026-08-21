@@ -1,25 +1,25 @@
 import { NavLink } from "react-router-dom";
 
+const links = [
+    { to: "/", label: "Home" },
+    { to: "/history", label: "History" },
+    { to: "/collections", label: "Collections" },
+    { to: "/mock-server", label: "Mock Server" },
+    { to: "/settings", label: "Settings" },
+];
+
 export default function Sidebar() {
     return (
-        <aside>
-            <nav>
+        <aside className="sidebar">
+            <nav aria-label="Primary navigation">
                 <ul>
-                    <li>
-                        <NavLink to="/">Home</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/history">History</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/collections">Collections</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/mock-server">Mock Server</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/settings">Settings</NavLink>
-                    </li>
+                    {links.map((link) => (
+                        <li key={link.to}>
+                            <NavLink className="nav-link" to={link.to}>
+                                {link.label}
+                            </NavLink>
+                        </li>
+                    ))}
                 </ul>
             </nav>
         </aside>

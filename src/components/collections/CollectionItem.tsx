@@ -7,18 +7,21 @@ type Props = {
 
 export default function CollectionItem({ request, onClick }: Props) {
     return (
-        <div
+        <button
+            type="button"
             onClick={() => onClick(request)}
             style={{
-                padding: "10px",
-                borderBottom: "1px solid #ddd",
-                cursor: "pointer",
+                alignItems: "center",
+                border: 0,
+                borderTop: "1px solid var(--border)",
+                borderRadius: 0,
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
             }}
         >
             <strong>{request.name}</strong>
-            <span style={{ marginLeft: "10px", color: "#888" }}>
-                ({request.request.method})
-            </span>
-        </div>
+            <span className="method-pill">{request.request.method}</span>
+        </button>
     );
 }
